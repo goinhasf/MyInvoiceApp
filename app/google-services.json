@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "200746850794",
+    "firebase_url": "https://myinvoiceapp-kiko-dev.firebaseio.com",
+    "project_id": "myinvoiceapp-kiko-dev",
+    "storage_bucket": "myinvoiceapp-kiko-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200746850794:android:eb1bd94d9008ef63",
+        "android_client_info": {
+          "package_name": "com.dev.kiko.myinvoice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200746850794-70a3cbpnuclel80o450uda88okunbuvt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.kiko.myinvoice",
+            "certificate_hash": "3b38ad3f91af1db82d9b2f20bc8c0eb104605a31"
+          }
+        },
+        {
+          "client_id": "200746850794-9m5hjjnleln54nh8je6m4l2cfb75q81j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXc4Ism6EAIwQbq8mmgh-roX4BEMHPxmE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200746850794-9m5hjjnleln54nh8je6m4l2cfb75q81j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

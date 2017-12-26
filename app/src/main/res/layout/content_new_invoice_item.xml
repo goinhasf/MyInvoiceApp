@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <EditText
+        android:id="@+id/et_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
+        android:hint="@string/quantity"
+        android:inputType="number"
+        android:maxWidth="42dp"
+        style="@style/InvoiceRowStyle"/>
+    <EditText
+        android:id="@+id/et_description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:inputType="textMultiLine"
+        android:hint="@string/description"
+        style="@style/InvoiceRowStyle"
+        android:textAlignment="textStart"/>
+    <EditText
+        android:id="@+id/et_unit_price"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
+        android:maxWidth="42dp"
+        android:hint="@string/unit_price"
+        android:inputType="numberDecimal"
+        style="@style/InvoiceRowStyle" />
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
+        tools:text="0"
+        style="@style/InvoiceRowStyle" />
+
+</LinearLayout>
