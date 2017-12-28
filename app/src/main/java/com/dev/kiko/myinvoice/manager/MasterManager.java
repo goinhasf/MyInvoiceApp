@@ -1,5 +1,6 @@
 package com.dev.kiko.myinvoice.manager;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.dev.kiko.myinvoice.model.invoice.Invoice;

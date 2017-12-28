@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dev.kiko.myinvoice.activities.FirebaseLoginActivity;
 import com.dev.kiko.myinvoice.activities.MainActivity;
 import com.dev.kiko.myinvoice.activities.NewInvoiceActivity;
 import com.dev.kiko.myinvoice.manager.MasterManager;
@@ -72,8 +73,9 @@ public class UserManager implements MasterManager.MyInvoiceUserManager {
     @Override
     public boolean isUserConnected(FirebaseUser user) {
 
-        if (user != null)
+        if (user != null) {
             return true;
+        }
 
         return false;
     }

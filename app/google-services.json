@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "200746850794-q318eao1m8vhg5eg5i742pdp6l9dl0vt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.kiko.myinvoice",
+            "certificate_hash": "12575ab486a97ae29c7441683a3589debcc81010"
+          }
+        },
+        {
           "client_id": "200746850794-70a3cbpnuclel80o450uda88okunbuvt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -1,6 +1,7 @@
 package com.dev.kiko.myinvoice.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -42,7 +43,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Arrays;
 import java.util.List;
 
-public class FirebaseLoginActivity extends Activity implements View.OnClickListener{
+public class FirebaseLoginActivity extends Activity implements View.OnClickListener {
 
     // Tag name for this acitivity
     private static final String TAG = "FirebaseLoginActivity";
@@ -69,9 +70,11 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
     // Password field
     private EditText mPasswordEditText;
     // The sign in request code for this app
-    private static final int RC_SIGN_IN = 123;
+    private static final int RC_SIGN_IN = 980;
     // CallbackManager for facebook
     private CallbackManager mCallbackManager;
+    // The context
+    private Context mContext;
 
 
     @Override
@@ -80,21 +83,27 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
         setContentView(R.layout.activity_firebase_login);
 
         // Initialize UI components
-        mGoogleSignInButton = (SignInButton)findViewById(R.id.google_bt_sign_in);
-        mFacebookLogInButton = (LoginButton)findViewById(R.id.facebook_bt_sign_in);
-        mSignInButton = (Button)findViewById(R.id.bt_sign_in);
-        mProgressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        mGoogleSignInButton = (SignInButton) findViewById(R.id.google_bt_sign_in);
+        mFacebookLogInButton = (LoginButton) findViewById(R.id.facebook_bt_sign_in);
+        mSignInButton = (Button) findViewById(R.id.bt_sign_in);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mEmailEditText = (EditText) findViewById(R.id.et_sign_in_email);
         mPasswordEditText = (EditText) findViewById(R.id.et_sign_in_password);
+
+
+        // Google login setup
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Initializes controller
         controller = CompanyController.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
 
-        currentUser = mAuth.getCurrentUser();
-
-        userManager = new UserManager(mAuth, this);
+        mContext = this;
 
         // Add OnClickListeners to Buttons
         mGoogleSignInButton.setOnClickListener(this);
@@ -108,29 +117,42 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
 
-        userManager.isUserConnected(currentUser);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userManager = new UserManager(mAuth, this);
+
+        if (userManager.isUserConnected(currentUser)) {
+
+            startActivity(new Intent(FirebaseLoginActivity.this, MainActivity.class));
+
+        }
 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RC_SIGN_IN) {
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+        if (requestCode == RC_SIGN_IN) {
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.e(TAG, "Google sign in failed", e);
 
             }
+        } else {
+
+            Toast.makeText(this, "Not Signed in", Toast.LENGTH_LONG).show();
+
         }
+
 
     }
 
@@ -176,6 +198,8 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             controller.setCurrentUser(user);
+                            startActivity(new Intent(FirebaseLoginActivity.this, MainActivity.class));
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -189,14 +213,8 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
                 });
     }
 
-    private void googleSignIn(){
+    private void googleSignIn() {
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -231,9 +249,6 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
 
     }
 
-    private void singIn(){
-    }
-
     private void firebaseAuthWithFacebook(AccessToken accessToken) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
@@ -246,6 +261,8 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             controller.setCurrentUser(user);
+                            startActivity(new Intent(FirebaseLoginActivity.this, MainActivity.class));
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -253,7 +270,6 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
                                     Toast.LENGTH_SHORT).show();
                             controller.setCurrentUser(null);
                         }
-
                         // ...
                     }
                 });
@@ -276,6 +292,8 @@ public class FirebaseLoginActivity extends Activity implements View.OnClickListe
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             controller.setCurrentUser(user);
+                            startActivity(new Intent(FirebaseLoginActivity.this, MainActivity.class));
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
